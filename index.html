@@ -2,48 +2,176 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>The FireHouse | Live Repository</title>
+    <title>The FireHouse | Synthesis Dashboard</title>
     <style>
+        /* Color Palette from your Graphic */
         :root {
-            --fire-red: #d32f2f;
-            --dark-gray: #1e1e1e;
-            --pre: #a3d39c;
-            --during: #ff3d00;
-            --post: #f44336;
-            --lt: #ffb74d;
+            --bg-cream: #fdfaf3;
+            --header-dark: #2d1b15;
+            --text-main: #4a3728;
+            --pre: #8ca587;      /* Sage Green */
+            --during: #d96e34;   /* Burnt Orange */
+            --post: #b3513d;     /* Earthy Red */
+            --lt: #cc9c42;       /* Harvest Gold */
+            --card-bg: rgba(255, 255, 255, 0.9);
         }
-        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: #f4f4f4; color: #333; line-height: 1.4; }
-        header { background: var(--dark-gray); color: white; padding: 1.5rem; text-align: center; border-bottom: 4px solid var(--fire-red); }
-        .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
-        .hero-image { display: block; max-width: 800px; margin: 0 auto 2rem; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
-        .status-bar { text-align: center; font-size: 0.8rem; color: #666; margin-bottom: 1.5rem; font-style: italic; }
-        .phase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
-        .card { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 8px solid #ccc; min-height: 220px; }
-        .card h3 { margin: 0 0 1rem 0; font-size: 1rem; text-transform: uppercase; color: #555; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; }
-        .need-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f9f9f9; font-size: 0.85rem; align-items: center; }
-        .count { font-weight: bold; color: var(--fire-red); background: #fff1f1; border: 1px solid #ffcdd2; padding: 2px 10px; border-radius: 20px; font-size: 0.8rem; }
+
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            background-color: var(--bg-cream);
+            color: var(--text-main);
+            /* Subtle Topo-Map Pattern Effect */
+            background-image: radial-gradient(circle at 2px 2px, #e9e2d5 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+
+        header {
+            background-color: var(--header-dark);
+            color: #fff;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            border-bottom: 8px solid var(--during);
+        }
+
+        header h1 { 
+            margin: 0; 
+            font-size: 2.5rem; 
+            letter-spacing: 4px; 
+            text-transform: uppercase;
+        }
+
+        header p { margin: 10px 0 0; opacity: 0.8; font-style: italic; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+
+        .status-bar {
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            font-size: 0.85rem;
+            border: 1px solid #e9e2d5;
+        }
+
+        .phase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        /* Card Styling to match the graphic */
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 24px rgba(45, 27, 21, 0.08);
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card h3 {
+            margin: 0 0 1.5rem 0;
+            font-size: 1.2rem;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+
+        /* Themed Borders */
         .card.pre { border-color: var(--pre); }
         .card.during { border-color: var(--during); }
         .card.post { border-color: var(--post); }
         .card.lt { border-color: var(--lt); }
+
+        .card.pre h3 { color: var(--pre); }
+        .card.during h3 { color: var(--during); }
+        .card.post h3 { color: var(--post); }
+        .card.lt h3 { color: var(--lt); }
+
+        /* Need Items */
+        .need-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0ece2;
+        }
+
+        .need-item:last-child { border: none; }
+
+        .need-name { font-weight: 500; font-size: 0.95rem; flex: 1; padding-right: 10px; }
+
+        .need-count-box {
+            text-align: right;
+            min-width: 60px;
+        }
+
+        .count-num {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .count-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            opacity: 0.6;
+        }
+
+        /* Icon Placeholder Circle */
+        .phase-icon {
+            width: 50px;
+            height: 50px;
+            background: #fdfaf3;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            border: 1px solid #eee;
+        }
+
     </style>
 </head>
 <body>
 
 <header>
     <h1>THE FIREHOUSE</h1>
-    <p>Live User Needs Repository</p>
+    <p>Synthesizing User Needs Across Wildland Fire Projects</p>
 </header>
 
-<div class="container">
-    <img src="TheFireHouse landing page.jpg" alt="Fire Cycle Reference" class="hero-image">
-    <div class="status-bar" id="syncStatus">Scanning Repository...</div>
+<div class="container" style="text-align: center;">
+    <div class="status-bar" id="syncStatus">📡 Establishing Connection to Google Sheets...</div>
 
     <div class="phase-grid">
-        <div class="card pre"><h3>Pre-Fire</h3><div id="pre-list"></div></div>
-        <div class="card during"><h3>During-Fire</h3><div id="during-list"></div></div>
-        <div class="card post"><h3>Post-Fire</h3><div id="post-list"></div></div>
-        <div class="card lt"><h3>LT Planning</h3><div id="lt-list"></div></div>
+        <div class="card pre">
+            <div class="phase-icon">🌱</div>
+            <h3>Pre-Fire Phase</h3>
+            <div id="pre-list"></div>
+        </div>
+
+        <div class="card during">
+            <div class="phase-icon">🔥</div>
+            <h3>During-Fire Phase</h3>
+            <div id="during-list"></div>
+        </div>
+
+        <div class="card post">
+            <div class="phase-icon">📉</div>
+            <h3>Post-Fire Phase</h3>
+            <div id="post-list"></div>
+        </div>
+
+        <div class="card lt">
+            <div class="phase-icon">📜</div>
+            <h3>LT Planning Phase</h3>
+            <div id="lt-list"></div>
+        </div>
     </div>
 </div>
 
@@ -54,19 +182,13 @@
         try {
             const response = await fetch(`${tsvUrl}&cb=${new Date().getTime()}`);
             const rawData = await response.text();
-            
-            // Handle both TSV and CSV just in case
             const delimiter = rawData.includes('\t') ? '\t' : ',';
-            const rows = rawData.split('\n')
-                                .filter(row => row.trim() !== '')
-                                .map(row => row.split(delimiter));
+            const rows = rawData.split('\n').filter(r => r.trim() !== '').map(r => r.split(delimiter));
             
             if (rows.length < 1) return;
-
             const header = rows[0];
             const dataRows = rows.slice(1);
 
-            // Find columns by keyword (flexible matching)
             const getCol = (key) => header.findIndex(h => h.toUpperCase().includes(key));
 
             updateQuadrant('pre-list', getCol('PREFIRE'), dataRows);
@@ -74,23 +196,18 @@
             updateQuadrant('post-list', getCol('POSTFIRE'), dataRows);
             updateQuadrant('lt-list', getCol('LT PLANNING'), dataRows);
 
-            document.getElementById('syncStatus').innerText = `Last Updated: ${new Date().toLocaleTimeString()} • ${dataRows.length} Entries Found`;
+            document.getElementById('syncStatus').innerText = `✅ Last Sync: ${new Date().toLocaleTimeString()} | ${dataRows.length} Projects Analyzed`;
         } catch (error) {
-            document.getElementById('syncStatus').innerHTML = "<span style='color:red'>Sync Error. Check Publish Settings.</span>";
+            document.getElementById('syncStatus').innerText = "❌ Sync Error: Check Publish Settings";
         }
     }
 
     function updateQuadrant(elementId, colIndex, dataRows) {
-        if (colIndex === -1) {
-            document.getElementById(elementId).innerHTML = '<p style="color:#999; font-size:0.7rem;">Column not detected</p>';
-            return;
-        }
-
+        if (colIndex === -1) return;
         const counts = {};
         dataRows.forEach(row => {
             const val = row[colIndex];
             if (val && val.trim() !== "") {
-                // Split checkboxes by comma
                 val.split(',').forEach(item => {
                     const clean = item.trim().replace(/"/g, '');
                     if (clean) counts[clean] = (counts[clean] || 0) + 1;
@@ -98,14 +215,17 @@
             }
         });
 
-        const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 3);
+        const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 4);
         const container = document.getElementById(elementId);
         container.innerHTML = sorted.map(i => `
             <div class="need-item">
-                <span>${i[0]}</span>
-                <span class="count">${i[1]}</span>
+                <div class="need-name">${i[0]}</div>
+                <div class="need-count-box">
+                    <span class="count-num">${i[1]}</span>
+                    <span class="count-label">Mentions</span>
+                </div>
             </div>
-        `).join('') || '<p style="color:#999; font-size:0.8rem;">No Data</p>';
+        `).join('') || '<p style="color:#999; font-size:0.8rem; margin-top:20px;">Awaiting Entries...</p>';
     }
 
     autoSync();
