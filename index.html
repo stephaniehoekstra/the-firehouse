@@ -17,165 +17,60 @@
         header { 
             background-color: var(--header-dark); 
             color: #fff; 
-            padding: 4rem 1rem; 
+            padding: 5rem 1rem; /* Large padding for large logo */
             text-align: center; 
             border-bottom: 8px solid var(--during); 
         }
 
-        /* BIG LOGO - NO TITLE */
+        /* MASSIVE LOGO STYLING */
         .logo-container {
-            margin: 0 auto 0.5rem;
-            max-width: 550px; /* Scaled up even more */
+            margin: 0 auto;
+            max-width: 850px; /* Maximum width for high-impact branding */
+            width: 90%;
         }
         .logo-container img {
             width: 100%;
             height: auto;
             display: block;
             margin: 0 auto;
-            /* If the image still has a tan background, this blends it into the dark header */
+            /* Blends out non-transparent backgrounds on dark headers */
             mix-blend-mode: screen; 
-            filter: drop-shadow(0 0 15px rgba(217, 110, 52, 0.5));
+            filter: drop-shadow(0 0 20px rgba(217, 110, 52, 0.4));
         }
 
         header p { 
-            margin: 1.5rem 0 0 0; 
+            margin: 2rem 0 0 0; 
             opacity: 0.9; 
             font-style: italic; 
-            letter-spacing: 2px; 
-            font-size: 1.2rem;
+            letter-spacing: 3px; 
+            font-size: 1.3rem;
             text-transform: uppercase;
+            font-weight: 300;
         }
 
-        /* MISSION BOX */
         .mission-box { 
             max-width: 850px; 
-            margin: -2.5rem auto 3rem; 
+            margin: -3rem auto 3rem; 
             background: white; 
-            padding: 2.5rem; 
+            padding: 3rem; 
             border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(45, 27, 21, 0.1); 
+            box-shadow: 0 15px 40px rgba(45, 27, 21, 0.15); 
             text-align: center; 
             border: 1px solid #e9e2d5; 
             position: relative; 
             z-index: 10; 
         }
-        .mission-box h2 { color: var(--header-dark); margin-top: 0; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px; }
+        .mission-box h2 { color: var(--header-dark); margin-top: 0; font-size: 1.6rem; text-transform: uppercase; letter-spacing: 2px; }
 
-        /* DATA CONTAINER */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem 5rem; text-align: center; }
-        .status-bar { background: #fff; padding: 10px 30px; border-radius: 50px; font-size: 0.8rem; margin-bottom: 2.5rem; display: inline-block; font-weight: bold; border: 1px solid #e9e2d5; color: #888; }
+        .status-bar { background: #fff; padding: 10px 35px; border-radius: 50px; font-size: 0.85rem; margin-bottom: 3rem; display: inline-block; font-weight: bold; border: 1px solid #e9e2d5; color: #888; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         
-        .phase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; margin-bottom: 4rem; }
+        .phase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; margin-bottom: 4rem; }
         
-        .card { background: white; border-radius: 20px; padding: 2rem 1.5rem; box-shadow: 0 8px 24px rgba(45, 27, 21, 0.05); border-top: 8px solid #ccc; min-height: 220px; }
+        .card { background: white; border-radius: 20px; padding: 2.5rem 1.5rem; box-shadow: 0 8px 24px rgba(45, 27, 21, 0.05); border-top: 10px solid #ccc; min-height: 220px; transition: transform 0.3s ease; }
+        .card:hover { transform: translateY(-5px); }
         .card.pre { border-color: var(--pre); }
         .card.during { border-color: var(--during); }
         .card.post { border-color: var(--post); }
         .card.lt { border-color: var(--lt); }
-        .card h3 { margin: 0 0 1.5rem 0; font-size: 1.1rem; text-transform: uppercase; color: var(--header-dark); border-bottom: 2px solid #f8f5f0; padding-bottom: 12px; }
-
-        /* MENTIONS STYLING */
-        .need-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f8f5f0; text-align: left; }
-        .need-item:last-child { border-bottom: none; }
-        .need-name { font-weight: 600; font-size: 0.95rem; color: #333; flex: 1; padding-right: 10px; }
-        .count-box { text-align: right; min-width: 65px; }
-        .count-num { display: block; font-size: 1.3rem; font-weight: 800; color: var(--header-dark); line-height: 1; }
-        .count-label { font-size: 0.6rem; text-transform: uppercase; opacity: 0.6; font-weight: bold; }
-
-        /* FOOTER */
-        .action-footer { background: var(--header-dark); color: white; padding: 5.5rem 1rem; text-align: center; }
-        .btn-group { display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; margin-top: 2.5rem; }
-        .btn { padding: 18px 45px; border-radius: 50px; font-weight: bold; font-size: 1.05rem; transition: all 0.3s ease; display: inline-block; cursor: pointer; border: none; font-family: inherit; text-decoration: none; }
-        .btn-primary { background: var(--during); color: white !important; box-shadow: 0 4px 15px rgba(217, 110, 52, 0.4); }
-        .btn-secondary { background: transparent; color: white !important; border: 2px solid white; }
-        .btn:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
-    </style>
-</head>
-<body>
-
-<header>
-    <div class="logo-container">
-        <img src="logo2.png" alt="The FireHouse Logo">
-    </div>
-    <p>Unified Wildland Fire User Needs Synthesis</p>
-</header>
-
-<div class="mission-box">
-    <h2>Our Mission</h2>
-    <p>The FireHouse acts as a centralized repository for synthesizing project-level user needs into a global strategic framework. By analyzing requirements across the entire fire cycle, we ensure that technological development and policy decisions are grounded in the real-world priorities of the fire community.</p>
-</div>
-
-<div class="container">
-    <div class="status-bar" id="syncStatus">Syncing Repository Data...</div>
-    <div class="phase-grid">
-        <div class="card pre"><h3>Pre-Fire Phase</h3><div id="pre-list"></div></div>
-        <div class="card during"><h3>During-Fire Phase</h3><div id="during-list"></div></div>
-        <div class="card post"><h3>Post-Fire Phase</h3><div id="post-list"></div></div>
-        <div class="card lt"><h3>LT Planning Phase</h3><div id="lt-list"></div></div>
-    </div>
-</div>
-
-<div class="action-footer">
-    <h3>Resources & Engagement</h3>
-    <div class="btn-group">
-        <button onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSfX-8WAY8TKATsV-6NMOXvd3eQnz04ItCM50xaRbD18kwiZNQ/viewform?usp=sf_link', '_blank')" class="btn btn-primary">
-            Submit Project Data
-        </button>
-        <button onclick="alert('The Annual Synthesis Report is currently being compiled.')" class="btn btn-secondary">
-            Annual Synthesis Report
-        </button>
-    </div>
-</div>
-
-<script>
-    const tsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSZfYZxUH4fLZG7405P8T7cv8IXT6NIXoO3hCjkcVuOdV2-JIrbBHhnhqgc-t9UcVc6tLl6eEuF9cWk/pub?gid=786915566&single=true&output=tsv';
-
-    async function autoSync() {
-        try {
-            const response = await fetch(`${tsvUrl}&cb=${Date.now()}`);
-            const rawData = await response.text();
-            const delimiter = rawData.includes('\t') ? '\t' : ',';
-            const rows = rawData.split('\n').filter(r => r.trim() !== '').map(r => r.split(delimiter));
-            const header = rows[0];
-            const dataRows = rows.slice(1);
-            const getCol = (key) => header.findIndex(h => h.toUpperCase().includes(key));
-
-            renderQuadrant('pre-list', getCol('PREFIRE'), dataRows);
-            renderQuadrant('during-list', getCol('DURING'), dataRows);
-            renderQuadrant('post-list', getCol('POSTFIRE'), dataRows);
-            renderQuadrant('lt-list', getCol('LT PLANNING'), dataRows);
-
-            document.getElementById('syncStatus').innerText = `LIVE REPOSITORY: ${dataRows.length} PROJECTS SYNTHESIZED`;
-        } catch (error) {
-            document.getElementById('syncStatus').innerText = "SYNC OFFLINE";
-        }
-    }
-
-    function renderQuadrant(elementId, colIndex, dataRows) {
-        if (colIndex === -1) return;
-        const counts = {};
-        dataRows.forEach(row => {
-            const val = row[colIndex];
-            if (val) {
-                val.split(',').forEach(item => {
-                    const clean = item.trim().replace(/"/g, '');
-                    if (clean) counts[clean] = (counts[clean] || 0) + 1;
-                });
-            }
-        });
-        const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 5);
-        document.getElementById(elementId).innerHTML = sorted.map(i => `
-            <div class="need-item">
-                <div class="need-name">${i[0]}</div>
-                <div class="count-box">
-                    <span class="count-num">${i[1]}</span>
-                    <span class="count-label">Mentions</span>
-                </div>
-            </div>
-        `).join('') || 'Awaiting data...';
-    }
-    autoSync();
-    setInterval(autoSync, 60000);
-</script>
-</body>
-</html>
+        .card h3 { margin: 0 0 1.5rem 0;
