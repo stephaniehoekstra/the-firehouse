@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The FireHouse | Live Repository</title>
+    <style>
+        :root {
+            --fire-red: #d32f2f;
+            --dark-gray: #1e1e1e;
+            --pre: #a3d39c;
+            --during: #ff3d00;
+            --post: #f44336;
+            --lt: #ffb74d;
+        }
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: #f4f4f4; color: #333; }
+        header { background: var(--dark-gray); color: white; padding: 1.5rem; text-align: center; border-bottom: 4px solid var(--fire-red); }
+        .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+        .hero-image { display: block; max-width: 800px; margin: 0 auto 2rem; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        
+        .status-bar { text-align: center; font-size: 0.8rem; color: #666; margin-bottom: 1.5rem; font-style: italic; }
+        
+        .phase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+        .card { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 8px solid #ccc; min-height: 220px; }
+        .card h3 { margin: 0 0 1rem 0; font-size: 1rem; text-transform: uppercase; color: #555; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; }
+        
+        .need-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f9f9f9; font-size: 0.85rem; align-items: center; }
+        .need-item:last-child { border: none; }
+        .count { font-weight: bold; color: var(--fire-red); background: #fff1f1; border: 1px solid #ffcdd2; padding: 2px 10px; border-radius: 20px; font-size: 0.8rem; }
+
+        .card.pre { border-color: var(--pre); }
+        .card.during { border-color: var(--during); }
+        .card.post { border-color: var(--post); }
+        .card.lt { border-color: var(--lt); }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>THE FIREHOUSE</h1>
+    <p>Synthesis Tool: Translating User Needs into Strategy</p>
+</header>
+
+<div class="container">
+    <img src="TheFireHouse landing page.jpg" alt="Fire Cycle Reference" class="hero-image">
+    <div class="status-bar" id="syncStatus">Fetching latest data...</div>
+
+    <div class="phase-grid">
+        <div class="card pre"><h3>Pre-Fire</h3><div id="pre-list"></div></div>
+        <div class="card during"><h3>During-Fire</h3><div id="during-list"></div></div>
+        <div class="card post"><h3>Post-Fire</h3><div id="post-list"></div></div>
+        <div class="card lt"><h3>LT Planning</h3><div id="lt-list"></div></div>
+    </div>
+</div>
+
+<script>
+    // Your TSV link from Google
+    const tsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQvCjD75QL7DpijJ7_-ahQC6v6mBv18sAEBkpg4bh0TUJZ-31rADy45mnfK_9K21cQioO51iwiAaVml/pub?gid=999834434&single=true&output=tsv';
+
+    async function autoSync() {
+        try {
+            const response = await fetch(tsvUrl);
+            const rawData = await response.text();
+            
+            // Split into rows and then split rows by Tab
+            const rows = rawData.split('\n')
+                                .filter(row => row.trim() !== '')
+                                .map(row => row.split('\t'));
+            
+            const dataRows = rows.slice(1); // Remove header
+
+            // Process each quadrant (Indices based on your 6 columns)
+            updateQuadrant('pre-list', 2, dataRows);
+            updateQuadrant('during-list', 3, dataRows);
+            updateQuadrant('post-list', 4, dataRows);
+            updateQuadrant('lt-list', 5, dataRows);
+
+            document.getElementById('syncStatus').innerText = `Last Updated: ${new Date().toLocaleTimeString()} • ${dataRows.length} Projects Analyzed`;
+        } catch (error) {
+            document.getElementById('syncStatus').innerHTML = "<span style='color:red'>Sync Error: Hosting on GitHub will resolve this.</span>";
+        }
+    }
+
+    function updateQuadrant(elementId, colIndex, dataRows) {
+        const counts = {};
+        
+        dataRows.forEach(row => {
+            const cellValue = row[colIndex];
+            if (cellValue && cellValue !== "" && cellValue !== "undefined") {
+                // SPLIT BY COMMA to handle Checkboxes
+                const individualNeeds = cellValue.split(',');
+                
+                individualNeeds.forEach(need => {
+                    const cleanNeed = need.trim().replace(/"/g, '');
+                    if (cleanNeed) {
+                        counts[cleanNeed] = (counts[cleanNeed] || 0) + 1;
+                    }
+                });
+            }
+        });
+
+        // Sort and take top 3
+        const sorted = Object.entries(counts)
+                            .sort((a, b) => b[1] - a[1])
+                            .slice(0, 3);
+
+        const container = document.getElementById(elementId);
+        container.innerHTML = sorted.map(item => `
+            <div class="need-item">
+                <span>${item[0]}</span>
+                <span class="count">${item[1]}</span>
+            </div>
+        `).join('') || '<p style="color:#999; font-size:0.8rem;">No Data Yet</p>';
+    }
+
+    autoSync();
+    // Auto-refresh every 5 minutes
+    setInterval(autoSync, 300000);
+</script>
+</body>
+</html>
