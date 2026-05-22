@@ -12,7 +12,7 @@
             --during: #d96e34;   
             --post: #b3513d;     
             --lt: #cc9c42;       
-            --card-bg: rgba(255, 255, 255, 0.94); 
+            --card-bg: #ffffff; 
         }
 
         body {
@@ -21,52 +21,60 @@
             background-color: var(--bg-cream);
             color: var(--text-main);
             line-height: 1.6;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
-                              url('https://images.unsplash.com/photo-1542332213-31f87348057f?q=80&w=2070&auto=format&fit=crop');
-            background-attachment: fixed;
-            background-size: cover;
-            background-position: center;
+            /* Subtle grid texture instead of a photo */
+            background-image: radial-gradient(circle at 2px 2px, #e9e2d5 1px, transparent 0);
+            background-size: 32px 32px;
         }
 
         header {
-            background-color: rgba(45, 27, 21, 0.9);
+            background-color: var(--header-dark);
             color: #fff;
-            padding: 3rem 1rem;
+            padding: 3.5rem 1rem;
             text-align: center;
             border-bottom: 8px solid var(--during);
-            backdrop-filter: blur(5px);
         }
 
-        header h1 { margin: 0; font-size: 2.8rem; letter-spacing: 6px; text-transform: uppercase; }
+        header h1 { 
+            margin: 0; 
+            font-size: 2.5rem; 
+            letter-spacing: 6px; 
+            text-transform: uppercase;
+        }
+
+        header p { 
+            margin-top: 10px; 
+            opacity: 0.8; 
+            font-style: italic;
+            letter-spacing: 1px;
+        }
         
         .mission-box {
             max-width: 850px;
-            margin: -2rem auto 3rem;
+            margin: -2.5rem auto 3rem;
             background: white;
             padding: 2.5rem;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(45, 27, 21, 0.1);
             text-align: center;
             border: 1px solid #e9e2d5;
             position: relative;
             z-index: 10;
         }
 
-        .mission-box h2 { color: var(--header-dark); margin-top: 0; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px; }
+        .mission-box h2 { color: var(--header-dark); margin-top: 0; font-size: 1.4rem; text-transform: uppercase; }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem 5rem; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem 5rem; text-align: center; }
 
         .status-bar {
-            background: rgba(255,255,255,0.9);
+            background: #fff;
             display: inline-block;
             padding: 8px 25px;
             border-radius: 50px;
             font-size: 0.75rem;
             font-weight: bold;
-            color: var(--header-dark);
-            margin-bottom: 2rem;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            color: #888;
+            margin-bottom: 2.5rem;
+            border: 1px solid #e9e2d5;
         }
 
         .phase-grid {
@@ -78,17 +86,25 @@
 
         .card {
             background: var(--card-bg);
-            border-radius: 20px;
+            border-radius: 16px;
             padding: 2rem 1.5rem;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
-            border: 4px solid transparent;
-            text-align: center;
-            transition: transform 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 3px solid transparent;
+            min-height: 250px;
+            transition: transform 0.2s ease;
         }
 
         .card:hover { transform: translateY(-5px); }
 
-        .card h3 { margin: 0 0 1.5rem 0; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--header-dark); border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .card h3 { 
+            margin: 0 0 1.5rem 0; 
+            font-size: 1rem; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            color: var(--header-dark);
+            border-bottom: 2px solid #f8f5f0;
+            padding-bottom: 12px;
+        }
 
         .card.pre { border-color: var(--pre); }
         .card.during { border-color: var(--during); }
@@ -99,17 +115,20 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 14px 0;
+            border-bottom: 1px solid #f8f5f0;
             text-align: left;
         }
 
-        .need-name { font-weight: 600; font-size: 0.95rem; color: #222; flex: 1; }
-        .count-num { display: block; font-size: 1.3rem; font-weight: 800; color: var(--header-dark); }
-        .count-label { font-size: 0.6rem; text-transform: uppercase; opacity: 0.6; }
+        .need-item:last-child { border-bottom: none; }
+
+        .need-name { font-weight: 600; font-size: 0.9rem; color: #333; flex: 1; }
+        .count-box { text-align: right; min-width: 50px; }
+        .count-num { display: block; font-size: 1.2rem; font-weight: 800; color: var(--header-dark); }
+        .count-label { font-size: 0.6rem; text-transform: uppercase; opacity: 0.5; }
 
         .action-footer {
-            background: rgba(45, 27, 21, 0.98);
+            background: var(--header-dark);
             color: white;
             padding: 5rem 1rem;
             text-align: center;
@@ -118,25 +137,24 @@
         .btn-group {
             display: flex;
             justify-content: center;
-            gap: 25px;
+            gap: 20px;
             flex-wrap: wrap;
             margin-top: 2.5rem;
         }
 
         .btn {
             text-decoration: none;
-            padding: 18px 35px;
+            padding: 16px 35px;
             border-radius: 50px;
             font-weight: bold;
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            font-size: 0.95rem;
             display: inline-block;
-            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .btn-primary { background: var(--during); color: white; border: none; }
-        .btn-secondary { background: transparent; color: white; border: 2px solid white; }
-        .btn:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .btn-primary { background: var(--during); color: white; }
+        .btn-secondary { border: 2px solid white; color: white; }
+        .btn:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 
     </style>
 </head>
@@ -149,11 +167,11 @@
 
 <div class="mission-box">
     <h2>Our Mission</h2>
-    <p>The FireHouse acts as a centralized repository for synthesizing project-level user needs into a global strategic framework. By analyzing requirements across the entire fire cycle, we ensure that technological development and policy decisions are grounded in the real-world priorities of the fire community.</p>
+    <p>The FireHouse acts as a centralized repository for synthesizing project-level user needs into a global strategic framework. By analyzing requirements across the entire fire cycle, we ensure that technological development is grounded in the real-world priorities of the fire community.</p>
 </div>
 
-<div class="container" style="text-align: center;">
-    <div class="status-bar" id="syncStatus">Initializing Live Data Stream...</div>
+<div class="container">
+    <div class="status-bar" id="syncStatus">Syncing Repository...</div>
 
     <div class="phase-grid">
         <div class="card pre"><h3>Pre-Fire Phase</h3><div id="pre-list"></div></div>
@@ -165,10 +183,11 @@
 
 <div class="action-footer">
     <h3>Resources & Engagement</h3>
-    <p style="opacity: 0.8;">Contribute your project data or explore the full analytical findings below.</p>
+    <p style="opacity: 0.7;">Submit your project data or download the latest synthesis findings.</p>
     <div class="btn-group">
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSf5vW_oG_x9vY6oNfVzC3p8S7g8j7v6rG9lH9wW_oG_x9vY6o/viewform" target="_blank" class="btn btn-primary">Submit Project Data</a>
-        <a href="#" class="btn btn-secondary" onclick="alert('The Annual Report is currently being synthesized and will be available soon!'); return false;">Annual Synthesis Report</a>
+        
+        <a href="#" class="btn btn-secondary" onclick="alert('The Annual Report is currently being compiled and will be available soon.'); return false;">Annual Synthesis Report</a>
     </div>
 </div>
 
@@ -179,6 +198,8 @@
         try {
             const response = await fetch(`${tsvUrl}&cb=${new Date().getTime()}`);
             const rawData = await response.text();
+            
+            // Auto-detect delimiter
             const delimiter = rawData.includes('\t') ? '\t' : ',';
             const rows = rawData.split('\n').filter(r => r.trim() !== '').map(r => r.split(delimiter));
             
@@ -186,6 +207,7 @@
             const header = rows[0];
             const dataRows = rows.slice(1);
 
+            // Flexible column search
             const getCol = (key) => header.findIndex(h => h.toUpperCase().includes(key));
 
             updateQuadrant('pre-list', getCol('PREFIRE'), dataRows);
@@ -193,9 +215,9 @@
             updateQuadrant('post-list', getCol('POSTFIRE'), dataRows);
             updateQuadrant('lt-list', getCol('LT PLANNING'), dataRows);
 
-            document.getElementById('syncStatus').innerText = `LIVE REPOSITORY: ${dataRows.length} PROJECTS ANALYZED`;
-        } catch (error) {
-            document.getElementById('syncStatus').innerText = "SYNC OFFLINE";
+            document.getElementById('syncStatus').innerText = `LIVE REPOSITORY: ${dataRows.length} PROJECTS SYNTHESIZED`;
+        } catch (e) {
+            document.getElementById('syncStatus').innerText = "SYNC OFFLINE - CHECKING GOOGLE CONNECTION";
         }
     }
 
@@ -212,4 +234,21 @@
             }
         });
 
-        const sorted = Object.entries(counts).
+        const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 5);
+        const container = document.getElementById(elementId);
+        container.innerHTML = sorted.map(i => `
+            <div class="need-item">
+                <div class="need-name">${i[0]}</div>
+                <div class="count-box">
+                    <span class="count-num">${i[1]}</span>
+                    <span class="count-label">Mentions</span>
+                </div>
+            </div>
+        `).join('') || '<p style="color:#bbb; font-size:0.8rem; margin-top:20px;">Awaiting Data...</p>';
+    }
+
+    autoSync();
+    setInterval(autoSync, 60000);
+</script>
+</body>
+</html>
