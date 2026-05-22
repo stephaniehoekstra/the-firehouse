@@ -17,27 +17,31 @@
         header { 
             background-color: var(--header-dark); 
             color: #fff; 
-            padding: 2.5rem 1rem; 
+            padding: 3rem 1rem; 
             text-align: center; 
             border-bottom: 8px solid var(--during); 
         }
 
-        /* Logo Styling */
+        /* Logo Styling specifically for logo.jpg */
         .logo-container {
-            margin-bottom: 1rem;
+            margin: 0 auto 1.5rem;
+            max-width: 220px; /* Adjust this to make logo larger or smaller */
         }
         .logo-container img {
-            max-width: 180px; /* Adjust size as needed */
+            width: 100%;
             height: auto;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+            border-radius: 15px; /* Matches the "card" aesthetic */
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+            display: block;
+            margin: 0 auto;
         }
 
         header h1 { margin: 0; font-size: 2.2rem; letter-spacing: 5px; text-transform: uppercase; }
-        header p { margin: 10px 0 0; opacity: 0.8; font-style: italic; letter-spacing: 1px; font-size: 0.9rem; }
+        header p { margin: 10px 0 0; opacity: 0.8; font-style: italic; font-size: 0.95rem; }
 
         .mission-box { 
             max-width: 850px; 
-            margin: -2rem auto 3rem; 
+            margin: -2.5rem auto 3rem; 
             background: white; 
             padding: 2.5rem; 
             border-radius: 20px; 
@@ -47,7 +51,7 @@
             position: relative; 
             z-index: 10; 
         }
-        .mission-box h2 { color: var(--header-dark); margin-top: 0; font-size: 1.4rem; text-transform: uppercase; letter-spacing: 2px; }
+        .mission-box h2 { color: var(--header-dark); margin-top: 0; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px; }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem 5rem; text-align: center; }
         .status-bar { background: #fff; padding: 8px 25px; border-radius: 50px; font-size: 0.75rem; margin-bottom: 2.5rem; display: inline-block; font-weight: bold; border: 1px solid #e9e2d5; color: #888; }
@@ -83,7 +87,7 @@
 
 <header>
     <div class="logo-container">
-        <img src="logo.png" alt="The FireHouse Logo">
+        <img src="logo.jpg" alt="The FireHouse Logo">
     </div>
     <h1>THE FIREHOUSE</h1>
     <p>Unified Wildland Fire User Needs Synthesis</p>
@@ -96,7 +100,6 @@
 
 <div class="container">
     <div class="status-bar" id="syncStatus">Syncing Repository Data...</div>
-
     <div class="phase-grid">
         <div class="card pre"><h3>Pre-Fire Phase</h3><div id="pre-list"></div></div>
         <div class="card during"><h3>During-Fire Phase</h3><div id="during-list"></div></div>
@@ -108,67 +111,4 @@
 <div class="action-footer">
     <h3>Resources & Engagement</h3>
     <div class="btn-group">
-        <button onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSfX-8WAY8TKATsV-6NMOXvd3eQnz04ItCM50xaRbD18kwiZNQ/viewform?usp=sf_link', '_blank')" class="btn btn-primary">
-            Submit Project Data
-        </button>
-        <button onclick="alert('The Annual Synthesis Report is in development.')" class="btn btn-secondary">
-            Annual Synthesis Report
-        </button>
-    </div>
-</div>
-
-<script>
-    const tsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSZfYZxUH4fLZG7405P8T7cv8IXT6NIXoO3hCjkcVuOdV2-JIrbBHhnhqgc-t9UcVc6tLl6eEuF9cWk/pub?gid=786915566&single=true&output=tsv';
-
-    async function autoSync() {
-        try {
-            const response = await fetch(`${tsvUrl}&cb=${Date.now()}`);
-            const rawData = await response.text();
-            const delimiter = rawData.includes('\t') ? '\t' : ',';
-            const rows = rawData.split('\n').filter(r => r.trim() !== '').map(r => r.split(delimiter));
-            
-            const header = rows[0];
-            const dataRows = rows.slice(1);
-            const getCol = (key) => header.findIndex(h => h.toUpperCase().includes(key));
-
-            renderQuadrant('pre-list', getCol('PREFIRE'), dataRows);
-            renderQuadrant('during-list', getCol('DURING'), dataRows);
-            renderQuadrant('post-list', getCol('POSTFIRE'), dataRows);
-            renderQuadrant('lt-list', getCol('LT PLANNING'), dataRows);
-
-            document.getElementById('syncStatus').innerText = `LIVE REPOSITORY: ${dataRows.length} PROJECTS SYNTHESIZED`;
-        } catch (error) {
-            document.getElementById('syncStatus').innerText = "SYNC OFFLINE";
-        }
-    }
-
-    function renderQuadrant(elementId, colIndex, dataRows) {
-        if (colIndex === -1) return;
-        const counts = {};
-        dataRows.forEach(row => {
-            const val = row[colIndex];
-            if (val) {
-                val.split(',').forEach(item => {
-                    const clean = item.trim().replace(/"/g, '');
-                    if (clean) counts[clean] = (counts[clean] || 0) + 1;
-                });
-            }
-        });
-
-        const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 5);
-        document.getElementById(elementId).innerHTML = sorted.map(i => `
-            <div class="need-item">
-                <div class="need-name">${i[0]}</div>
-                <div class="count-box">
-                    <span class="count-num">${i[1]}</span>
-                    <span class="count-label">Mentions</span>
-                </div>
-            </div>
-        `).join('') || '<p style="color:#bbb; font-size:0.8rem; margin-top:20px;">Awaiting Data...</p>';
-    }
-
-    autoSync();
-    setInterval(autoSync, 60000);
-</script>
-</body>
-</html>
+        <button onclick="window.open('
