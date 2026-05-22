@@ -22,18 +22,18 @@
             border-bottom: 8px solid var(--during); 
         }
 
-        /* Logo Styling specifically for logo.jpg */
         .logo-container {
             margin: 0 auto 1.5rem;
-            max-width: 220px; /* Adjust this to make logo larger or smaller */
+            max-width: 220px;
         }
         .logo-container img {
             width: 100%;
             height: auto;
-            border-radius: 15px; /* Matches the "card" aesthetic */
+            border-radius: 15px;
             box-shadow: 0 6px 15px rgba(0,0,0,0.4);
             display: block;
             margin: 0 auto;
+            background: white; /* Fallback if the JPG has transparency issues */
         }
 
         header h1 { margin: 0; font-size: 2.2rem; letter-spacing: 5px; text-transform: uppercase; }
@@ -87,7 +87,9 @@
 
 <header>
     <div class="logo-container">
-        <img src="logo.jpg" alt="The FireHouse Logo">
+        <img src="logo.jpg" 
+             alt="The FireHouse Logo" 
+             onerror="this.src='./logo.jpg'; this.onerror=function(){this.src='Logo.jpg';}">
     </div>
     <h1>THE FIREHOUSE</h1>
     <p>Unified Wildland Fire User Needs Synthesis</p>
@@ -111,4 +113,27 @@
 <div class="action-footer">
     <h3>Resources & Engagement</h3>
     <div class="btn-group">
-        <button onclick="window.open('
+        <button onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSfX-8WAY8TKATsV-6NMOXvd3eQnz04ItCM50xaRbD18kwiZNQ/viewform?usp=sf_link', '_blank')" class="btn btn-primary">
+            Submit Project Data
+        </button>
+        <button onclick="alert('The Annual Synthesis Report is in development.')" class="btn btn-secondary">
+            Annual Synthesis Report
+        </button>
+    </div>
+</div>
+
+<script>
+    const tsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSZfYZxUH4fLZG7405P8T7cv8IXT6NIXoO3hCjkcVuOdV2-JIrbBHhnhqgc-t9UcVc6tLl6eEuF9cWk/pub?gid=786915566&single=true&output=tsv';
+
+    async function autoSync() {
+        try {
+            const response = await fetch(`${tsvUrl}&cb=${Date.now()}`);
+            const rawData = await response.text();
+            const delimiter = rawData.includes('\t') ? '\t' : ',';
+            const rows = rawData.split('\n').filter(r => r.trim() !== '').map(r => r.split(delimiter));
+            const header = rows[0];
+            const dataRows = rows.slice(1);
+            const getCol = (key) => header.findIndex(h => h.toUpperCase().includes(key));
+            renderQuadrant('pre-list', getCol('PREFIRE'), dataRows);
+            renderQuadrant('during-list', getCol('DURING'), dataRows);
+            renderQuadrant('post-list', getCol('POSTFIRE'), dataRows);
