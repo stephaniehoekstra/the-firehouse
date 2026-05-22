@@ -4,16 +4,15 @@
     <meta charset="UTF-8">
     <title>The FireHouse | Synthesis Dashboard</title>
     <style>
-        /* Color Palette from your Graphic */
         :root {
             --bg-cream: #fdfaf3;
             --header-dark: #2d1b15;
             --text-main: #4a3728;
-            --pre: #8ca587;      /* Sage Green */
-            --during: #d96e34;   /* Burnt Orange */
-            --post: #b3513d;     /* Earthy Red */
-            --lt: #cc9c42;       /* Harvest Gold */
-            --card-bg: rgba(255, 255, 255, 0.9);
+            --pre: #8ca587;      /* Sage */
+            --during: #d96e34;   /* Orange */
+            --post: #b3513d;     /* Red */
+            --lt: #cc9c42;       /* Gold */
+            --card-bg: rgba(255, 255, 255, 0.95);
         }
 
         body {
@@ -21,120 +20,112 @@
             margin: 0;
             background-color: var(--bg-cream);
             color: var(--text-main);
-            /* Subtle Topo-Map Pattern Effect */
             background-image: radial-gradient(circle at 2px 2px, #e9e2d5 1px, transparent 0);
             background-size: 40px 40px;
+            line-height: 1.6;
         }
 
         header {
             background-color: var(--header-dark);
             color: #fff;
-            padding: 2.5rem 1rem;
+            padding: 3rem 1rem;
             text-align: center;
             border-bottom: 8px solid var(--during);
         }
 
-        header h1 { 
-            margin: 0; 
-            font-size: 2.5rem; 
-            letter-spacing: 4px; 
-            text-transform: uppercase;
+        header h1 { margin: 0; font-size: 2.8rem; letter-spacing: 6px; text-transform: uppercase; }
+        
+        .mission-box {
+            max-width: 800px;
+            margin: -2rem auto 3rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            text-align: center;
+            border: 1px solid #e9e2d5;
         }
 
-        header p { margin: 10px 0 0; opacity: 0.8; font-style: italic; }
+        .mission-box h2 { color: var(--header-dark); margin-top: 0; font-size: 1.4rem; }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem 4rem; }
 
         .status-bar {
-            background: #fff;
-            padding: 10px 20px;
-            border-radius: 50px;
-            display: inline-block;
+            font-size: 0.8rem;
+            color: #888;
             margin-bottom: 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            font-size: 0.85rem;
-            border: 1px solid #e9e2d5;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .phase-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
+            gap: 25px;
+            margin-bottom: 4rem;
         }
 
-        /* Card Styling to match the graphic */
         .card {
             background: var(--card-bg);
             border-radius: 20px;
-            padding: 1.5rem;
-            box-shadow: 0 8px 24px rgba(45, 27, 21, 0.08);
+            padding: 2rem 1.5rem;
+            box-shadow: 0 8px 24px rgba(45, 27, 21, 0.05);
             border: 3px solid transparent;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card h3 {
-            margin: 0 0 1.5rem 0;
-            font-size: 1.2rem;
             text-align: center;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #eee;
         }
 
-        /* Themed Borders */
+        .card h3 { margin: 0 0 1.5rem 0; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Card Themes */
         .card.pre { border-color: var(--pre); }
         .card.during { border-color: var(--during); }
         .card.post { border-color: var(--post); }
         .card.lt { border-color: var(--lt); }
 
-        .card.pre h3 { color: var(--pre); }
-        .card.during h3 { color: var(--during); }
-        .card.post h3 { color: var(--post); }
-        .card.lt h3 { color: var(--lt); }
-
-        /* Need Items */
         .need-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
+            padding: 15px 0;
             border-bottom: 1px solid #f0ece2;
+            text-align: left;
         }
 
-        .need-item:last-child { border: none; }
+        .need-name { font-weight: 600; font-size: 0.9rem; color: #333; flex: 1; }
+        .need-count-box { text-align: right; min-width: 50px; }
+        .count-num { display: block; font-size: 1.2rem; font-weight: bold; color: var(--header-dark); }
+        .count-label { font-size: 0.6rem; text-transform: uppercase; opacity: 0.5; }
 
-        .need-name { font-weight: 500; font-size: 0.95rem; flex: 1; padding-right: 10px; }
-
-        .need-count-box {
-            text-align: right;
-            min-width: 60px;
+        /* Link Section / Footer */
+        .action-footer {
+            background: #f0ece2;
+            padding: 4rem 1rem;
+            text-align: center;
+            border-top: 1px solid #e9e2d5;
         }
 
-        .count-num {
-            display: block;
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-
-        .count-label {
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            opacity: 0.6;
-        }
-
-        /* Icon Placeholder Circle */
-        .phase-icon {
-            width: 50px;
-            height: 50px;
-            background: #fdfaf3;
-            border-radius: 50%;
-            margin: 0 auto 15px;
+        .btn-group {
             display: flex;
-            align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            border: 1px solid #eee;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 2rem;
         }
+
+        .btn {
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary { background: var(--during); color: white; box-shadow: 0 4px 15px rgba(217, 110, 52, 0.3); }
+        .btn-secondary { background: var(--header-dark); color: white; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
 
     </style>
 </head>
@@ -142,36 +133,31 @@
 
 <header>
     <h1>THE FIREHOUSE</h1>
-    <p>Synthesizing User Needs Across Wildland Fire Projects</p>
+    <p>Unified Wildland Fire User Needs Synthesis</p>
 </header>
 
-<div class="container" style="text-align: center;">
-    <div class="status-bar" id="syncStatus">📡 Establishing Connection to Google Sheets...</div>
+<div class="mission-box">
+    <h2>Our Mission</h2>
+    <p>The FireHouse acts as a centralized repository for synthesizing project-level user needs into a global strategic framework. By analyzing requirements across the entire fire cycle, we ensure that technological development and policy decisions are grounded in the real-world priorities of the fire community.</p>
+</div>
+
+<div class="container">
+    <div class="status-bar" id="syncStatus">Syncing Repository Data...</div>
 
     <div class="phase-grid">
-        <div class="card pre">
-            <div class="phase-icon">🌱</div>
-            <h3>Pre-Fire Phase</h3>
-            <div id="pre-list"></div>
-        </div>
+        <div class="card pre"><h3>Pre-Fire Phase</h3><div id="pre-list"></div></div>
+        <div class="card during"><h3>During-Fire Phase</h3><div id="during-list"></div></div>
+        <div class="card post"><h3>Post-Fire Phase</h3><div id="post-list"></div></div>
+        <div class="card lt"><h3>LT Planning Phase</h3><div id="lt-list"></div></div>
+    </div>
+</div>
 
-        <div class="card during">
-            <div class="phase-icon">🔥</div>
-            <h3>During-Fire Phase</h3>
-            <div id="during-list"></div>
-        </div>
-
-        <div class="card post">
-            <div class="phase-icon">📉</div>
-            <h3>Post-Fire Phase</h3>
-            <div id="post-list"></div>
-        </div>
-
-        <div class="card lt">
-            <div class="phase-icon">📜</div>
-            <h3>LT Planning Phase</h3>
-            <div id="lt-list"></div>
-        </div>
+<div class="action-footer">
+    <h3>Resources & Engagement</h3>
+    <p>Contribute your project data or explore the full analytical findings below.</p>
+    <div class="btn-group">
+        <a href="INSERT_FORM_LINK_HERE" class="btn btn-primary">Submit Project Data</a>
+        <a href="INSERT_REPORT_LINK_HERE" class="btn btn-secondary">Annual Synthesis Report</a>
     </div>
 </div>
 
@@ -196,9 +182,9 @@
             updateQuadrant('post-list', getCol('POSTFIRE'), dataRows);
             updateQuadrant('lt-list', getCol('LT PLANNING'), dataRows);
 
-            document.getElementById('syncStatus').innerText = `✅ Last Sync: ${new Date().toLocaleTimeString()} | ${dataRows.length} Projects Analyzed`;
+            document.getElementById('syncStatus').innerText = `LIVE REPOSITORY: ${dataRows.length} PROJECTS SYNTHESIZED`;
         } catch (error) {
-            document.getElementById('syncStatus').innerText = "❌ Sync Error: Check Publish Settings";
+            document.getElementById('syncStatus').innerText = "SYNC OFFLINE";
         }
     }
 
@@ -225,7 +211,7 @@
                     <span class="count-label">Mentions</span>
                 </div>
             </div>
-        `).join('') || '<p style="color:#999; font-size:0.8rem; margin-top:20px;">Awaiting Entries...</p>';
+        `).join('') || '<p style="color:#999; font-size:0.8rem; margin-top:20px;">Awaiting Data...</p>';
     }
 
     autoSync();
