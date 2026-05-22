@@ -16,12 +16,11 @@
         header { background: var(--dark-gray); color: white; padding: 1.5rem; text-align: center; border-bottom: 4px solid var(--fire-red); }
         .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
         .hero-image { display: block; max-width: 800px; margin: 0 auto 2rem; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
-        .status-bar { text-align: center; font-size: 0.8rem; color: #666; margin-bottom: 1.5rem; font-style: italic; }
+        .status-bar { text-align: center; font-size: 0.8rem; color: #666; margin-bottom: 1.5rem; }
         .phase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
         .card { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 8px solid #ccc; min-height: 220px; }
         .card h3 { margin: 0 0 1rem 0; font-size: 1rem; text-transform: uppercase; color: #555; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; }
         .need-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f9f9f9; font-size: 0.85rem; align-items: center; }
-        .need-item:last-child { border: none; }
         .count { font-weight: bold; color: var(--fire-red); background: #fff1f1; border: 1px solid #ffcdd2; padding: 2px 10px; border-radius: 20px; font-size: 0.8rem; }
         .card.pre { border-color: var(--pre); }
         .card.during { border-color: var(--during); }
@@ -38,7 +37,7 @@
 
 <div class="container">
     <img src="TheFireHouse landing page.jpg" alt="Fire Cycle Reference" class="hero-image">
-    <div class="status-bar" id="syncStatus">Fetching latest data...</div>
+    <div class="status-bar" id="syncStatus">Connecting to Live Sheet...</div>
 
     <div class="phase-grid">
         <div class="card pre"><h3>Pre-Fire</h3><div id="pre-list"></div></div>
@@ -49,25 +48,25 @@
 </div>
 
 <script>
-    // Your NEW personal Google Sheet TSV link
+    // Direct TSV Link
     const tsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSZfYZxUH4fLZG7405P8T7cv8IXT6NIXoO3hCjkcVuOdV2-JIrbBHhnhqgc-t9UcVc6tLl6eEuF9cWk/pub?gid=786915566&single=true&output=tsv';
-    
-    // Using a proxy to ensure local/github environments can talk to Google Sheets reliably
-    const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(tsvUrl);
 
     async function autoSync() {
         try {
-            const response = await fetch(proxyUrl);
-            const json = await response.json();
-            const rawData = json.contents;
+            // Direct fetch (No Proxy needed on GitHub Pages for Personal Gmail)
+            const response = await fetch(tsvUrl, { cache: "no-store" });
+            const rawData = await response.text();
             
+            if (rawData.includes('<!DOCTYPE html>')) {
+                throw new Error('Not published correctly as TSV');
+            }
+
             const rows = rawData.split('\n')
                                 .filter(row => row.trim() !== '')
                                 .map(row => row.split('\t'));
             
             const dataRows = rows.slice(1);
 
-            // Mapping: 0:TS, 1:Title, 2:Pre, 3:During, 4:Post, 5:LT
             updateQuadrant('pre-list', 2, dataRows);
             updateQuadrant('during-list', 3, dataRows);
             updateQuadrant('post-list', 4, dataRows);
@@ -75,7 +74,7 @@
 
             document.getElementById('syncStatus').innerText = `Last Updated: ${new Date().toLocaleTimeString()} • ${dataRows.length} Projects Analyzed`;
         } catch (error) {
-            document.getElementById('syncStatus').innerHTML = "<span style='color:red'>Sync Error: Waiting for data flow...</span>";
+            document.getElementById('syncStatus').innerHTML = "<span style='color:red'>Sync Status: Waiting for Google Sheet to propagate...</span>";
             console.error(error);
         }
     }
@@ -85,7 +84,6 @@
         dataRows.forEach(row => {
             const cellValue = row[colIndex];
             if (cellValue && cellValue !== "" && cellValue !== "undefined") {
-                // Splits checkboxes (commas) into individual tallies
                 const individualNeeds = cellValue.split(',');
                 individualNeeds.forEach(need => {
                     const cleanNeed = need.trim().replace(/"/g, '');
@@ -103,11 +101,11 @@
                 <span>${item[0]}</span>
                 <span class="count">${item[1]}</span>
             </div>
-        `).join('') || '<p style="color:#999; font-size:0.8rem;">No Data Found</p>';
+        `).join('') || '<p style="color:#999; font-size:0.8rem;">Awaiting entries...</p>';
     }
 
     autoSync();
-    setInterval(autoSync, 300000); // Refreshes every 5 mins
+    setInterval(autoSync, 60000); // Check every minute
 </script>
 </body>
 </html>
