@@ -17,17 +17,27 @@
         header { 
             background-color: var(--header-dark); 
             color: #fff; 
-            padding: 3.5rem 1rem; 
+            padding: 2.5rem 1rem; 
             text-align: center; 
             border-bottom: 8px solid var(--during); 
         }
-        header h1 { margin: 0; font-size: 2.5rem; letter-spacing: 5px; text-transform: uppercase; }
-        header p { margin: 10px 0 0; opacity: 0.8; font-style: italic; letter-spacing: 1px; }
 
-        /* Long-Form Mission Box */
+        /* Logo Styling */
+        .logo-container {
+            margin-bottom: 1rem;
+        }
+        .logo-container img {
+            max-width: 180px; /* Adjust size as needed */
+            height: auto;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        }
+
+        header h1 { margin: 0; font-size: 2.2rem; letter-spacing: 5px; text-transform: uppercase; }
+        header p { margin: 10px 0 0; opacity: 0.8; font-style: italic; letter-spacing: 1px; font-size: 0.9rem; }
+
         .mission-box { 
             max-width: 850px; 
-            margin: -2.5rem auto 3rem; 
+            margin: -2rem auto 3rem; 
             background: white; 
             padding: 2.5rem; 
             border-radius: 20px; 
@@ -37,55 +47,22 @@
             position: relative; 
             z-index: 10; 
         }
-        .mission-box h2 { color: var(--header-dark); margin-top: 0; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px; }
+        .mission-box h2 { color: var(--header-dark); margin-top: 0; font-size: 1.4rem; text-transform: uppercase; letter-spacing: 2px; }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem 5rem; text-align: center; }
-        
-        .status-bar { 
-            background: #fff; 
-            padding: 8px 25px; 
-            border-radius: 50px; 
-            font-size: 0.75rem; 
-            margin-bottom: 2.5rem; 
-            display: inline-block; 
-            font-weight: bold; 
-            border: 1px solid #e9e2d5; 
-            color: #888; 
-        }
+        .status-bar { background: #fff; padding: 8px 25px; border-radius: 50px; font-size: 0.75rem; margin-bottom: 2.5rem; display: inline-block; font-weight: bold; border: 1px solid #e9e2d5; color: #888; }
         
         .phase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; margin-bottom: 4rem; }
         
-        .card { 
-            background: white; 
-            border-radius: 20px; 
-            padding: 2rem 1.5rem; 
-            box-shadow: 0 8px 24px rgba(45, 27, 21, 0.05); 
-            border-top: 8px solid #ccc; 
-            min-height: 220px; 
-        }
+        .card { background: white; border-radius: 20px; padding: 2rem 1.5rem; box-shadow: 0 8px 24px rgba(45, 27, 21, 0.05); border-top: 8px solid #ccc; min-height: 220px; }
         .card.pre { border-color: var(--pre); }
         .card.during { border-color: var(--during); }
         .card.post { border-color: var(--post); }
         .card.lt { border-color: var(--lt); }
         
-        .card h3 { 
-            margin: 0 0 1.5rem 0; 
-            font-size: 1.1rem; 
-            text-transform: uppercase; 
-            color: var(--header-dark); 
-            border-bottom: 2px solid #f8f5f0; 
-            padding-bottom: 12px; 
-        }
+        .card h3 { margin: 0 0 1.5rem 0; font-size: 1.1rem; text-transform: uppercase; color: var(--header-dark); border-bottom: 2px solid #f8f5f0; padding-bottom: 12px; }
 
-        /* "Mentions" Counter Styling */
-        .need-item { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 12px 0; 
-            border-bottom: 1px solid #f8f5f0; 
-            text-align: left; 
-        }
+        .need-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f8f5f0; text-align: left; }
         .need-item:last-child { border-bottom: none; }
         .need-name { font-weight: 600; font-size: 0.95rem; color: #333; flex: 1; padding-right: 10px; }
         
@@ -96,20 +73,8 @@
         .action-footer { background: var(--header-dark); color: white; padding: 5.5rem 1rem; text-align: center; }
         .btn-group { display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; margin-top: 2.5rem; }
         
-        /* Fixed Button Logic */
-        .btn { 
-            padding: 18px 45px; 
-            border-radius: 50px; 
-            font-weight: bold; 
-            font-size: 1.05rem; 
-            transition: all 0.3s ease; 
-            display: inline-block; 
-            cursor: pointer; 
-            border: none; 
-            font-family: inherit; 
-            text-decoration: none;
-        }
-        .btn-primary { background: var(--during); color: white !important; box-shadow: 0 4px 15px rgba(217, 110, 52, 0.4); }
+        .btn { padding: 18px 45px; border-radius: 50px; font-weight: bold; font-size: 1rem; transition: all 0.3s ease; display: inline-block; cursor: pointer; border: none; font-family: inherit; }
+        .btn-primary { background: var(--during); color: white !important; }
         .btn-secondary { background: transparent; color: white !important; border: 2px solid white; }
         .btn:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
     </style>
@@ -117,6 +82,9 @@
 <body>
 
 <header>
+    <div class="logo-container">
+        <img src="logo.png" alt="The FireHouse Logo">
+    </div>
     <h1>THE FIREHOUSE</h1>
     <p>Unified Wildland Fire User Needs Synthesis</p>
 </header>
@@ -139,13 +107,11 @@
 
 <div class="action-footer">
     <h3>Resources & Engagement</h3>
-    <p style="opacity: 0.8; max-width: 600px; margin: 0 auto;">Contribute your project data or explore the full analytical findings below.</p>
     <div class="btn-group">
         <button onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSfX-8WAY8TKATsV-6NMOXvd3eQnz04ItCM50xaRbD18kwiZNQ/viewform?usp=sf_link', '_blank')" class="btn btn-primary">
             Submit Project Data
         </button>
-        
-        <button onclick="alert('The Annual Synthesis Report is currently being compiled and will be available soon.')" class="btn btn-secondary">
+        <button onclick="alert('The Annual Synthesis Report is in development.')" class="btn btn-secondary">
             Annual Synthesis Report
         </button>
     </div>
@@ -172,7 +138,7 @@
 
             document.getElementById('syncStatus').innerText = `LIVE REPOSITORY: ${dataRows.length} PROJECTS SYNTHESIZED`;
         } catch (error) {
-            document.getElementById('syncStatus').innerText = "SYNC OFFLINE - CHECKING GOOGLE DATA";
+            document.getElementById('syncStatus').innerText = "SYNC OFFLINE";
         }
     }
 
