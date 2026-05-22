@@ -15,14 +15,18 @@
         body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: #f4f4f4; color: #333; }
         header { background: var(--dark-gray); color: white; padding: 1.5rem; text-align: center; border-bottom: 4px solid var(--fire-red); }
         .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+        
+        /* Layout for the mockup image */
         .hero-image { display: block; max-width: 800px; margin: 0 auto 2rem; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
         
         .status-bar { text-align: center; font-size: 0.8rem; color: #666; margin-bottom: 1.5rem; font-style: italic; }
         
+        /* Grid for the 4 phase cards */
         .phase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
         .card { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 8px solid #ccc; min-height: 220px; }
         .card h3 { margin: 0 0 1rem 0; font-size: 1rem; text-transform: uppercase; color: #555; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; }
         
+        /* Styling the individual need rows */
         .need-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f9f9f9; font-size: 0.85rem; align-items: center; }
         .need-item:last-child { border: none; }
         .count { font-weight: bold; color: var(--fire-red); background: #fff1f1; border: 1px solid #ffcdd2; padding: 2px 10px; border-radius: 20px; font-size: 0.8rem; }
@@ -42,7 +46,7 @@
 
 <div class="container">
     <img src="TheFireHouse landing page.jpg" alt="Fire Cycle Reference" class="hero-image">
-    <div class="status-bar" id="syncStatus">Fetching latest data...</div>
+    <div class="status-bar" id="syncStatus">Syncing with Google Repository...</div>
 
     <div class="phase-grid">
         <div class="card pre"><h3>Pre-Fire</h3><div id="pre-list"></div></div>
@@ -53,22 +57,23 @@
 </div>
 
 <script>
-    // Your TSV link from Google
+    // Live TSV link from your Google Sheet
     const tsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQvCjD75QL7DpijJ7_-ahQC6v6mBv18sAEBkpg4bh0TUJZ-31rADy45mnfK_9K21cQioO51iwiAaVml/pub?gid=999834434&single=true&output=tsv';
 
     async function autoSync() {
         try {
+            // On GitHub Pages, we can fetch directly without a proxy
             const response = await fetch(tsvUrl);
             const rawData = await response.text();
             
-            // Split into rows and then split rows by Tab
+            // Parse TSV rows
             const rows = rawData.split('\n')
                                 .filter(row => row.trim() !== '')
                                 .map(row => row.split('\t'));
             
             const dataRows = rows.slice(1); // Remove header
 
-            // Process each quadrant (Indices based on your 6 columns)
+            // Column Mapping: 0:Timestamp, 1:Title, 2:Pre, 3:During, 4:Post, 5:LT
             updateQuadrant('pre-list', 2, dataRows);
             updateQuadrant('during-list', 3, dataRows);
             updateQuadrant('post-list', 4, dataRows);
@@ -76,7 +81,8 @@
 
             document.getElementById('syncStatus').innerText = `Last Updated: ${new Date().toLocaleTimeString()} • ${dataRows.length} Projects Analyzed`;
         } catch (error) {
-            document.getElementById('syncStatus').innerHTML = "<span style='color:red'>Sync Error: Hosting on GitHub will resolve this.</span>";
+            document.getElementById('syncStatus').innerHTML = "<span style='color:red'>Sync Error: Check Google Sheet Publish Settings.</span>";
+            console.error(error);
         }
     }
 
@@ -86,11 +92,12 @@
         dataRows.forEach(row => {
             const cellValue = row[colIndex];
             if (cellValue && cellValue !== "" && cellValue !== "undefined") {
-                // SPLIT BY COMMA to handle Checkboxes
+                
+                // SPLIT BY COMMA: This handles the Checkbox multi-select values
                 const individualNeeds = cellValue.split(',');
                 
                 individualNeeds.forEach(need => {
-                    const cleanNeed = need.trim().replace(/"/g, '');
+                    const cleanNeed = need.trim().replace(/"/g, ''); // Remove quotes/extra spaces
                     if (cleanNeed) {
                         counts[cleanNeed] = (counts[cleanNeed] || 0) + 1;
                     }
@@ -98,7 +105,7 @@
             }
         });
 
-        // Sort and take top 3
+        // Sort by frequency and take top 3
         const sorted = Object.entries(counts)
                             .sort((a, b) => b[1] - a[1])
                             .slice(0, 3);
@@ -112,8 +119,10 @@
         `).join('') || '<p style="color:#999; font-size:0.8rem;">No Data Yet</p>';
     }
 
+    // Run sync immediately
     autoSync();
-    // Auto-refresh every 5 minutes
+    
+    // Auto-refresh every 5 minutes while the page is open
     setInterval(autoSync, 300000);
 </script>
 </body>
