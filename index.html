@@ -12,11 +12,11 @@
             --post: #f44336;
             --lt: #ffb74d;
         }
-        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: #f4f4f4; color: #333; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: #f4f4f4; color: #333; line-height: 1.4; }
         header { background: var(--dark-gray); color: white; padding: 1.5rem; text-align: center; border-bottom: 4px solid var(--fire-red); }
         .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
         .hero-image { display: block; max-width: 800px; margin: 0 auto 2rem; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
-        .status-bar { text-align: center; font-size: 0.8rem; color: #666; margin-bottom: 1.5rem; }
+        .status-bar { text-align: center; font-size: 0.8rem; color: #666; margin-bottom: 1.5rem; font-style: italic; }
         .phase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
         .card { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 8px solid #ccc; min-height: 220px; }
         .card h3 { margin: 0 0 1rem 0; font-size: 1rem; text-transform: uppercase; color: #555; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; }
@@ -32,12 +32,12 @@
 
 <header>
     <h1>THE FIREHOUSE</h1>
-    <p>Synthesis Tool: Translating User Needs into Strategy</p>
+    <p>Live User Needs Repository</p>
 </header>
 
 <div class="container">
     <img src="TheFireHouse landing page.jpg" alt="Fire Cycle Reference" class="hero-image">
-    <div class="status-bar" id="syncStatus">Connecting to Live Sheet...</div>
+    <div class="status-bar" id="syncStatus">Scanning Repository...</div>
 
     <div class="phase-grid">
         <div class="card pre"><h3>Pre-Fire</h3><div id="pre-list"></div></div>
@@ -48,64 +48,68 @@
 </div>
 
 <script>
-    // Direct TSV Link
     const tsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSZfYZxUH4fLZG7405P8T7cv8IXT6NIXoO3hCjkcVuOdV2-JIrbBHhnhqgc-t9UcVc6tLl6eEuF9cWk/pub?gid=786915566&single=true&output=tsv';
 
     async function autoSync() {
         try {
-            // Direct fetch (No Proxy needed on GitHub Pages for Personal Gmail)
-            const response = await fetch(tsvUrl, { cache: "no-store" });
+            const response = await fetch(`${tsvUrl}&cb=${new Date().getTime()}`);
             const rawData = await response.text();
             
-            if (rawData.includes('<!DOCTYPE html>')) {
-                throw new Error('Not published correctly as TSV');
-            }
-
+            // Handle both TSV and CSV just in case
+            const delimiter = rawData.includes('\t') ? '\t' : ',';
             const rows = rawData.split('\n')
                                 .filter(row => row.trim() !== '')
-                                .map(row => row.split('\t'));
+                                .map(row => row.split(delimiter));
             
+            if (rows.length < 1) return;
+
+            const header = rows[0];
             const dataRows = rows.slice(1);
 
-            updateQuadrant('pre-list', 2, dataRows);
-            updateQuadrant('during-list', 3, dataRows);
-            updateQuadrant('post-list', 4, dataRows);
-            updateQuadrant('lt-list', 5, dataRows);
+            // Find columns by keyword (flexible matching)
+            const getCol = (key) => header.findIndex(h => h.toUpperCase().includes(key));
 
-            document.getElementById('syncStatus').innerText = `Last Updated: ${new Date().toLocaleTimeString()} • ${dataRows.length} Projects Analyzed`;
+            updateQuadrant('pre-list', getCol('PREFIRE'), dataRows);
+            updateQuadrant('during-list', getCol('DURING'), dataRows);
+            updateQuadrant('post-list', getCol('POSTFIRE'), dataRows);
+            updateQuadrant('lt-list', getCol('LT PLANNING'), dataRows);
+
+            document.getElementById('syncStatus').innerText = `Last Updated: ${new Date().toLocaleTimeString()} • ${dataRows.length} Entries Found`;
         } catch (error) {
-            document.getElementById('syncStatus').innerHTML = "<span style='color:red'>Sync Status: Waiting for Google Sheet to propagate...</span>";
-            console.error(error);
+            document.getElementById('syncStatus').innerHTML = "<span style='color:red'>Sync Error. Check Publish Settings.</span>";
         }
     }
 
     function updateQuadrant(elementId, colIndex, dataRows) {
+        if (colIndex === -1) {
+            document.getElementById(elementId).innerHTML = '<p style="color:#999; font-size:0.7rem;">Column not detected</p>';
+            return;
+        }
+
         const counts = {};
         dataRows.forEach(row => {
-            const cellValue = row[colIndex];
-            if (cellValue && cellValue !== "" && cellValue !== "undefined") {
-                const individualNeeds = cellValue.split(',');
-                individualNeeds.forEach(need => {
-                    const cleanNeed = need.trim().replace(/"/g, '');
-                    if (cleanNeed) {
-                        counts[cleanNeed] = (counts[cleanNeed] || 0) + 1;
-                    }
+            const val = row[colIndex];
+            if (val && val.trim() !== "") {
+                // Split checkboxes by comma
+                val.split(',').forEach(item => {
+                    const clean = item.trim().replace(/"/g, '');
+                    if (clean) counts[clean] = (counts[clean] || 0) + 1;
                 });
             }
         });
 
         const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 3);
         const container = document.getElementById(elementId);
-        container.innerHTML = sorted.map(item => `
+        container.innerHTML = sorted.map(i => `
             <div class="need-item">
-                <span>${item[0]}</span>
-                <span class="count">${item[1]}</span>
+                <span>${i[0]}</span>
+                <span class="count">${i[1]}</span>
             </div>
-        `).join('') || '<p style="color:#999; font-size:0.8rem;">Awaiting entries...</p>';
+        `).join('') || '<p style="color:#999; font-size:0.8rem;">No Data</p>';
     }
 
     autoSync();
-    setInterval(autoSync, 60000); // Check every minute
+    setInterval(autoSync, 60000);
 </script>
 </body>
 </html>
