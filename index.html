@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The FireHouse | Synthesis Dashboard</title>
     <style>
         :root {
@@ -12,65 +13,221 @@
             --post: #b3513d;     
             --lt: #cc9c42;       
         }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: var(--bg-cream); color: #4a3728; line-height: 1.6; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 0;
+            background-color: var(--bg-cream); 
+            color: #4a3728; 
+        }
         
         header { 
             background-color: var(--header-dark); 
             color: #fff; 
-            padding: 5rem 1rem; /* Large padding for large logo */
+            padding: 60px 20px; 
             text-align: center; 
             border-bottom: 8px solid var(--during); 
         }
 
-        /* MASSIVE LOGO STYLING */
         .logo-container {
             margin: 0 auto;
-            max-width: 850px; /* Maximum width for high-impact branding */
-            width: 90%;
+            max-width: 800px; 
+            width: 95%;
         }
         .logo-container img {
             width: 100%;
             height: auto;
             display: block;
             margin: 0 auto;
-            /* Blends out non-transparent backgrounds on dark headers */
-            mix-blend-mode: screen; 
+            /* Force transparency on the logo */
+            mix-blend-mode: screen;
             filter: drop-shadow(0 0 20px rgba(217, 110, 52, 0.4));
         }
 
         header p { 
-            margin: 2rem 0 0 0; 
+            margin-top: 30px;
             opacity: 0.9; 
             font-style: italic; 
-            letter-spacing: 3px; 
-            font-size: 1.3rem;
+            letter-spacing: 2px; 
+            font-size: 1.2rem;
             text-transform: uppercase;
-            font-weight: 300;
         }
 
         .mission-box { 
             max-width: 850px; 
-            margin: -3rem auto 3rem; 
-            background: white; 
-            padding: 3rem; 
+            margin: -40px auto 50px; 
+            background: #ffffff; 
+            padding: 40px; 
             border-radius: 20px; 
-            box-shadow: 0 15px 40px rgba(45, 27, 21, 0.15); 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1); 
             text-align: center; 
             border: 1px solid #e9e2d5; 
             position: relative; 
             z-index: 10; 
         }
-        .mission-box h2 { color: var(--header-dark); margin-top: 0; font-size: 1.6rem; text-transform: uppercase; letter-spacing: 2px; }
+        .mission-box h2 { color: var(--header-dark); margin-top: 0; text-transform: uppercase; letter-spacing: 2px; }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem 5rem; text-align: center; }
-        .status-bar { background: #fff; padding: 10px 35px; border-radius: 50px; font-size: 0.85rem; margin-bottom: 3rem; display: inline-block; font-weight: bold; border: 1px solid #e9e2d5; color: #888; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; text-align: center; }
         
-        .phase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; margin-bottom: 4rem; }
+        .status-bar { 
+            background: #fff; 
+            padding: 10px 30px; 
+            border-radius: 50px; 
+            font-size: 0.85rem; 
+            margin-bottom: 40px; 
+            display: inline-block; 
+            font-weight: bold; 
+            border: 1px solid #e9e2d5;
+        }
         
-        .card { background: white; border-radius: 20px; padding: 2.5rem 1.5rem; box-shadow: 0 8px 24px rgba(45, 27, 21, 0.05); border-top: 10px solid #ccc; min-height: 220px; transition: transform 0.3s ease; }
-        .card:hover { transform: translateY(-5px); }
+        .phase-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); 
+            gap: 25px; 
+            margin-bottom: 60px; 
+        }
+        
+        .card { 
+            background: #fff; 
+            border-radius: 20px; 
+            padding: 30px 20px; 
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05); 
+            border-top: 10px solid #ccc; 
+            min-height: 250px; 
+        }
         .card.pre { border-color: var(--pre); }
         .card.during { border-color: var(--during); }
         .card.post { border-color: var(--post); }
         .card.lt { border-color: var(--lt); }
-        .card h3 { margin: 0 0 1.5rem 0;
+        
+        .card h3 { 
+            margin: 0 0 20px 0; 
+            font-size: 1.1rem; 
+            text-transform: uppercase; 
+            color: var(--header-dark); 
+            border-bottom: 2px solid #f8f5f0; 
+            padding-bottom: 15px; 
+        }
+
+        .need-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 15px 0; 
+            border-bottom: 1px solid #f8f5f0; 
+            text-align: left; 
+        }
+        .need-item:last-child { border-bottom: none; }
+        
+        .need-name { font-weight: 600; font-size: 0.95rem; color: #333; flex: 1; }
+        .count-box { text-align: right; min-width: 70px; }
+        .count-num { display: block; font-size: 1.3rem; font-weight: 800; color: var(--header-dark); line-height: 1; }
+        .count-label { font-size: 0.6rem; text-transform: uppercase; opacity: 0.6; font-weight: bold; }
+
+        .action-footer { background: var(--header-dark); color: #fff; padding: 80px 20px; text-align: center; }
+        .btn-group { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px; }
+        
+        .btn { 
+            padding: 18px 40px; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            font-size: 1rem; 
+            cursor: pointer; 
+            border: none; 
+            text-decoration: none; 
+            transition: 0.3s;
+            display: inline-block;
+        }
+        .btn-primary { background: var(--during); color: #fff !important; }
+        .btn-secondary { background: transparent; color: #fff !important; border: 2px solid #fff; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo-container">
+        <img src="logo2.png" alt="The FireHouse Logo">
+    </div>
+    <p>Unified Wildland Fire User Needs Synthesis</p>
+</header>
+
+<div class="mission-box">
+    <h2>Our Mission</h2>
+    <p>The FireHouse acts as a centralized repository for synthesizing project-level user needs into a global strategic framework. By analyzing requirements across the entire fire cycle, we ensure that technological development and policy decisions are grounded in the real-world priorities of the fire community.</p>
+</div>
+
+<div class="container">
+    <div class="status-bar" id="syncStatus">Fetching Data...</div>
+    <div class="phase-grid">
+        <div class="card pre"><h3>Pre-Fire Phase</h3><div id="pre-list"></div></div>
+        <div class="card during"><h3>During-Fire Phase</h3><div id="during-list"></div></div>
+        <div class="card post"><h3>Post-Fire Phase</h3><div id="post-list"></div></div>
+        <div class="card lt"><h3>LT Planning Phase</h3><div id="lt-list"></div></div>
+    </div>
+</div>
+
+<div class="action-footer">
+    <h3>Resources & Engagement</h3>
+    <div class="btn-group">
+        <button onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSfX-8WAY8TKATsV-6NMOXvd3eQnz04ItCM50xaRbD18kwiZNQ/viewform?usp=sf_link', '_blank')" class="btn btn-primary">
+            Submit Project Data
+        </button>
+        <button onclick="alert('Annual Report Coming Soon')" class="btn btn-secondary">
+            Annual Synthesis Report
+        </button>
+    </div>
+</div>
+
+<script>
+    const tsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSZfYZxUH4fLZG7405P8T7cv8IXT6NIXoO3hCjkcVuOdV2-JIrbBHhnhqgc-t9UcVc6tLl6eEuF9cWk/pub?gid=786915566&single=true&output=tsv';
+
+    async function autoSync() {
+        try {
+            const res = await fetch(`${tsvUrl}&cache=` + Date.now());
+            const text = await res.text();
+            const rows = text.split('\n').filter(r => r.trim() !== '').map(r => r.split('\t'));
+            
+            if (rows.length < 1) return;
+            const header = rows[0];
+            const data = rows.slice(1);
+            const getCol = (name) => header.findIndex(h => h.toUpperCase().includes(name));
+
+            updateView('pre-list', getCol('PREFIRE'), data);
+            updateView('during-list', getCol('DURING'), data);
+            updateView('post-list', getCol('POSTFIRE'), data);
+            updateView('lt-list', getCol('LT PLANNING'), data);
+
+            document.getElementById('syncStatus').innerText = "LIVE DATA: " + data.length + " PROJECTS ANALYZED";
+        } catch (e) {
+            document.getElementById('syncStatus').innerText = "DATA SYNC OFFLINE";
+        }
+    }
+
+    function updateView(id, col, data) {
+        if (col === -1) return;
+        const counts = {};
+        data.forEach(r => {
+            const val = r[col];
+            if (val) val.split(',').forEach(item => {
+                const clean = item.trim().replace(/"/g, '');
+                if (clean) counts[clean] = (counts[clean] || 0) + 1;
+            });
+        });
+        const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 5);
+        document.getElementById(id).innerHTML = sorted.map(i => `
+            <div class="need-item">
+                <div class="need-name">${i[0]}</div>
+                <div class="count-box">
+                    <span class="count-num">${i[1]}</span>
+                    <span class="count-label">Mentions</span>
+                </div>
+            </div>
+        `).join('') || "Awaiting data...";
+    }
+
+    autoSync();
+    setInterval(autoSync, 60000);
+</script>
+</body>
+</html>
